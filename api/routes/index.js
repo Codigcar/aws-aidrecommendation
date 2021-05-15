@@ -20,6 +20,7 @@ module.exports = function({
     questionRoutes,
     monitoringRoutes,
     foroRoutes,
+    answerRoutes
 }){
     const router = Router();
     const apiRoute = Router();
@@ -48,6 +49,7 @@ module.exports = function({
 
     apiRoute.use('/patients', questionRoutes);
     apiRoute.use('/foros', foroRoutes );
+    apiRoute.use('/answer',answerRoutes)
 
     // admin
     apiRoute.use('/admin', foroRoutes );

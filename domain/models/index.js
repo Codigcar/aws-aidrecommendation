@@ -15,4 +15,5 @@ module.exports = {
     Question : require('./question'),
     Monitoring : require('./monitoring'),
     Foro : require('./foro'),
+    Answer : require('./answer')
 }

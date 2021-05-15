@@ -8,7 +8,10 @@ class ForoService extends BaseService{
     }
 
     /*You can add other methods that there aren´t in the crud */
-    
+    async getAllWithAnswers() {
+        const entities = await this._entityBunisess.getAllWithAnswers();
+        return entities;
+    }
 }
 
 module.exports = ForoService;

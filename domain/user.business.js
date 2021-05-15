@@ -12,6 +12,12 @@ class UserBusiness extends BaseBusiness{
         if(!entity) return;
         return mapper(this._entityToMap,entity.toJSON());
     }
+
+    async getUserByKeyWord (keyWord) {
+        const count = await this._entityRepository.getUserByKeyWord(keyWord);
+        return count;
+    }
+
 }
 
 module.exports = UserBusiness;

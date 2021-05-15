@@ -1,7 +1,7 @@
 class Foro {
     id = 0;
     question = '';
-    answer = '';
+    answers = [];
 }
 
 module.exports = Foro;

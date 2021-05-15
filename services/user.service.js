@@ -12,6 +12,11 @@ class UserService extends BaseService{
         return entity;
     }
 
+    async getUserByKeyWord (keyWord) {
+        const count = await this._entityBunisess.getUserByKeyWord(keyWord);
+        return count;
+    }
+
     
 }
 

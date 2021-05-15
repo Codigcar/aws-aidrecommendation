@@ -37,27 +37,35 @@ class UserController {
     async writeMessage(req, res) {
         try {
             const { Correo, Usuario, Contrasenia, Rol, PalabraSecreta, ...dataModel } = req.body;
+            const count = await this._userService.getUserByKeyWord(PalabraSecreta);
+            if (count > 0) {
+                res.status(200).send({
+                    message: 'Ya hay un usuario con esa palabra secreta'
+                })
+            } else {
 
-            const userCreated = await this._userService.create({Correo, Usuario, Contrasenia, Rol, PalabraSecreta});
-            
-            dataModel.userId = userCreated.id;
+                const userCreated = await this._userService.create({ Correo, Usuario, Contrasenia, Rol, PalabraSecreta });
 
-            var modelCreated = '';
-            
-            if(Rol === 1){ 
-                modelCreated = await this._patientService.create(dataModel)
-                await this._medicalHistoryService.create({patientId: modelCreated.id });
+                dataModel.userId = userCreated.id;
+
+                var modelCreated = '';
+
+                if (Rol === 1) {
+                    modelCreated = await this._patientService.create(dataModel)
+                    await this._medicalHistoryService.create({ patientId: modelCreated.id });
+                }
+                else {
+                    modelCreated = await this._doctorService.create(dataModel);
+                }
+
+                // crear historialMedico x default
+                res.status(200).send({
+                    user: userCreated,
+                    modelCreated,
+                })
             }
-            else {
-                modelCreated = await this._doctorService.create(dataModel);
-            }
 
-            // crear historialMedico x default
 
-            res.status(200).send({
-                user: userCreated,
-                modelCreated,
-            })
         } catch (err) {
             console.log(err);
             res.status(400).send({
@@ -110,7 +118,7 @@ class UserController {
                     status: "200",
                     payload: message
                 });
-            }else{
+            } else {
                 return res.send({
                     status: "404",
                     payload: "Not found the element"
@@ -130,13 +138,13 @@ class UserController {
         try {
             const { token } = req.params;
 
-            const { uid } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
+            const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
             let patientOdoctor = '';
-             patientOdoctor = await this._patientService.getByForeignKeyUserId(uid);
-            if( !patientOdoctor ){
+            patientOdoctor = await this._patientService.getByForeignKeyUserId(uid);
+            if (!patientOdoctor) {
                 patientOdoctor = await this._doctorService.getByForeignKeyUserId(uid);
             }
-            
+
             const user = await this._userService.get(patientOdoctor.userId);
 
             user.patientOdoctor = patientOdoctor
@@ -160,7 +168,7 @@ class UserController {
             const { userId } = req.params;
             const user = await this._userService.get(userId);
             let patientOdoctor = {};
-            if( user.Rol === 1 ){
+            if (user.Rol === 1) {
                 patientOdoctor = await this._patientService.getIdPatientDoctorByIdUser(userId);
                 patientOdoctor.Especialidad = '';
                 patientOdoctor.Colegiatura = '';
@@ -169,7 +177,7 @@ class UserController {
                 patientOdoctor.PalabraSecreta = user.PalabraSecreta;
                 patientOdoctor.Usuario = user.Usuario;
                 patientOdoctor.Rol = user.Rol;
-            } else if ( user.Rol === 2){
+            } else if (user.Rol === 2) {
                 patientOdoctor = await this._doctorService.getIdPatientDoctorByIdUser(userId);
                 patientOdoctor.Correo = user.Correo;
                 patientOdoctor.Contrasenia = user.Contrasenia;
@@ -181,7 +189,7 @@ class UserController {
                 return res.status(200).send({
                     data: patientOdoctor
                 });
-            }else{
+            } else {
                 return res.status(400).send({
                     data: "Usuario no encontrado"
                 });
@@ -201,18 +209,18 @@ class UserController {
             const { userId } = req.params;
 
             const user = await this._userService.get(userId);
-            if( user.Rol === 1 ){
+            if (user.Rol === 1) {
                 const { Usuario, Correo, Contrasenia, PalabraSecreta, Rol, ...patient } = req.body;
                 const patientOdoctor = await this._patientService.getIdPatientDoctorByIdUser(user.id);
                 patient.userId = user.id;
                 await this._patientService.update(patientOdoctor.id, patient);
-                await this._userService.update(user.id, {Usuario, Correo, Contrasenia, PalabraSecreta, Rol});
-            } else if ( user.Rol === 2){
+                await this._userService.update(user.id, { Usuario, Correo, Contrasenia, PalabraSecreta, Rol });
+            } else if (user.Rol === 2) {
                 const { Usuario, Correo, Contrasenia, PalabraSecreta, Rol, ...doctor } = req.body;
                 const patientOdoctor = await this._doctorService.getIdPatientDoctorByIdUser(user.id);
                 doctor.userId = user.id;
                 await this._doctorService.update(patientOdoctor.id, doctor);
-                await this._userService.update(user.id, {Usuario, Correo, Contrasenia, PalabraSecreta,Rol});
+                await this._userService.update(user.id, { Usuario, Correo, Contrasenia, PalabraSecreta, Rol });
             }
 
             res.status(200).send({
@@ -233,13 +241,16 @@ class UserController {
             // const { userId } = req.params;
             const { body } = req;
 
+            //const count = await this._userService.getUserByKeyWord(body.PalabraSecreta);
+
+
             const user = await this._userService.getPasswordByKeyWord(body.PalabraSecreta);
 
             if (user) {
                 return res.status(200).send({
                     data: user.Contrasenia
                 });
-            }else{
+            } else {
                 return res.status(400).send({
                     data: "Usuario no encontrado"
                 });

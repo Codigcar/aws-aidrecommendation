@@ -24,6 +24,7 @@ const PrescriptionRoutes = require("./routes/prescription.route");
 const QuestionRoutes = require("./routes/question.route");
 const MonitoringRoutes = require("./routes/monitoring.route");
 const ForoRoutes = require("./routes/foro.route");
+const AnswerRoutes = require("./routes/answer.route");
 
 
 //Controllers
@@ -45,6 +46,7 @@ const {
     QuestionController,
     MonitoringController,
     ForoController,
+    AnswerController
 } = require('./controllers')
 
 //Services
@@ -64,6 +66,7 @@ const {
     QuestionService,
     MonitoringService,
     ForoService,
+    AnswerService
 } = require('../services')
 
 //Business
@@ -83,6 +86,7 @@ const {
     QuestionBusiness,
     MonitoringBusiness,
     ForoBusiness,
+    AnswerBusiness
 } = require('../domain')
 
 //Repository
@@ -102,6 +106,7 @@ const {
     QuestionRepository,
     MonitoringRepository,
     ForoRepository,
+    AnswerRepository
 } = require('../dal/repository')
 
 
@@ -136,6 +141,7 @@ container
         questionRoutes : asFunction(QuestionRoutes).singleton(),
         monitoringRoutes : asFunction(MonitoringRoutes).singleton(),
         foroRoutes : asFunction(ForoRoutes).singleton(),
+        answerRoutes : asFunction(AnswerRoutes).singleton()
     })
     .register({
         /*Controllers */
@@ -156,6 +162,7 @@ container
         questionController: asClass(QuestionController).singleton(),
         monitoringController: asClass(MonitoringController).singleton(),
         foroController: asClass(ForoController).singleton(),
+        answerController : asClass(AnswerController).singleton()
     })
     .register({
         /*Services */
@@ -174,6 +181,7 @@ container
         questionService: asClass(QuestionService).singleton(),
         monitoringService: asClass(MonitoringService).singleton(),
         foroService: asClass(ForoService).singleton(),
+        answerService : asClass(AnswerService).singleton()
     })
     .register({
         /*Business */
@@ -192,6 +200,7 @@ container
         questionBusiness: asClass(QuestionBusiness).singleton(),
         monitoringBusiness: asClass(MonitoringBusiness).singleton(),
         foroBusiness: asClass(ForoBusiness).singleton(),
+        answerBusiness : asClass(AnswerBusiness).singleton()
     })
     .register({
         /*Repository */
@@ -210,6 +219,7 @@ container
         questionRepository: asClass(QuestionRepository).singleton(),
         monitoringRepository: asClass(MonitoringRepository).singleton(),
         foroRepository: asClass(ForoRepository).singleton(),
+        answerRepository : asClass(AnswerRepository).singleton()
     })
     .register({
         db: asValue(db)

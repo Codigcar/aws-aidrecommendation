@@ -14,4 +14,5 @@ module.exports = {
     QuestionRepository : require('./question.repository'),
     MonitoringRepository : require('./monitoring.repository'),
     ForoRepository : require('./foro.repository'),
+    AnswerRepository : require('./answer.repository')
 }

@@ -125,6 +125,18 @@ class DoctorController {
             // }
 
             const doctors = await this._doctorService.getAll();
+            const consultations = await this._medicalConsultationService.getAll();
+            console.log(AllMedicalConsultations)
+
+            for (const iteratorDoctor of doctors) {
+                iteratorDoctor.consultas = 0;
+                for (const consultation of consultations) {
+                    if( consultation.doctorId === iteratorDoctor.id){
+                         iteratorDoctor.consultas = iteratorDoctor.consultas + 1;
+                    }
+                    
+                }
+            }
 
             res.status(200).send({
                 data: doctors

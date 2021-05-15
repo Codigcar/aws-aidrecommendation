@@ -15,7 +15,7 @@ class ForoController {
     async getMessages(req, res) {
 
         // const { medicalHistroyId, patientId } = req.params;
-        const foro = await this._foroService.getAll();
+        const foro = await this._foroService.getAllWithAnswers();
 
         try {
             res.status(200).send({
