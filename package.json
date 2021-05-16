@@ -9,7 +9,7 @@
     "seeders": "sequelize db:seed:all",
     "remove-migrations": "sequelize-cli db:migrate:undo:all",
     "remove-seeders": "sequelize db:seed:undo:all",
-    "start": "npm run migrations && npm run seeders && nodemon index"
+    "start": "npm run migrations && npm run seeders && node index"
   },
   "keywords": [],
   "license": "ISC",

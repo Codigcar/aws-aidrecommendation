@@ -1,4 +1,3 @@
-
 var mysql = require('mysql2');
 const env = process.env.NODE_ENV;
 const currentEnv = require('./config/environments')[process.env.NODE_ENV];
@@ -22,4 +21,3 @@ con.connect(function (err) {
   });
 }
 );
-
